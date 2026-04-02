@@ -1,0 +1,36 @@
+# LiveKit configuration file
+
+# Development keys - CHANGE IN PRODUCTION
+keys:
+  devkey: secret
+
+# Logging configuration
+logging:
+  level: info
+
+# Server ports
+port: 7880
+rtc:
+  tcp_port: 7881
+  udp_port: 4379
+  
+# WebRTC settings
+rtc:
+  use_external_ip: false
+  enable_loopback_candidate: true
+
+# Redis is optional for single-server setups
+# redis:
+#   address: localhost:6379
+
+# Webhook configuration
+webhook:
+  api_key: devkey
+  urls:
+    - http://localhost:4000/api/webhooks/livekit
+
+# CORS settings for development
+cors:
+  allow_origins:
+    - http://localhost:3000
+    - https://your-production-domain.com
