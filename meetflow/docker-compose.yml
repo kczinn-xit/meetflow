@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  # LiveKit Server
+  livekit:
+    image: livekit/livekit-server:latest
+    ports:
+      - "7880:7880"
+      - "7881:7881"
+      - "4379:4379/udp"
+    volumes:
+      - ./livekit.yaml:/etc/livekit/livekit.yaml
+    command: --config /etc/livekit/livekit.yaml
+    networks:
+      - meetflow-network
+    restart: unless-stopped
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: meetflow
+      POSTGRES_PASSWORD: meetflow_password
+      POSTGRES_DB: meetflow
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - meetflow-network
+    restart: unless-stopped
+
+  # Redis (optional, for scaling)
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - meetflow-network
+    restart: unless-stopped
+
+networks:
+  meetflow-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
